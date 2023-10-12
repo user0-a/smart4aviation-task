@@ -10,13 +10,26 @@ public class Controller {
 
     @Autowired
     private RequestProcessor requestProcessor;
+
+    @Autowired
+    private ParametersValidator parametersValidator;
+
     @GetMapping(value = "/iata-summary")
     public String getUsers(@RequestParam String IATACode, @RequestParam String date) throws Exception {
-       return requestProcessor.iataCodeResponse(IATACode,date).toString();
+        if(!parametersValidator.checkIfDateIsValid(date)){
+            return parametersValidator.createDateNotValidResponse(date).toString();
+        }
+        if(!parametersValidator.checkIfIATACodeIsValid(IATACode)){
+            return parametersValidator.createIATACodeValidResponse(IATACode).toString();
+        }
+       return requestProcessor.iataCodeResponse(IATACode, parametersValidator.getDate(date)).toString();
     }
 
     @GetMapping(value = "/flight-number-summary")
     public String getUsers(@RequestParam int flightNumber, @RequestParam String date) throws Exception {
-        return requestProcessor.flightNumberResponse(flightNumber,date).toString();
+        if(!parametersValidator.checkIfDateIsValid(date)){
+            return parametersValidator.createDateNotValidResponse(date).toString();
+        }
+        return requestProcessor.flightNumberResponse(flightNumber,parametersValidator.getDate(date)).toString();
     }
 }

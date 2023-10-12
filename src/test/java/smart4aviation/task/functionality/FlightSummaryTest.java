@@ -7,6 +7,7 @@ import smart4aviation.task.model.RequestProcessor;
 import smart4aviation.task.model.responses.FlightSummaryResponse;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static smart4aviation.task.util.DateParser.parseDateFromString;
 
 @SpringBootTest
 public class FlightSummaryTest {
@@ -15,7 +16,8 @@ public class FlightSummaryTest {
 
     @Test
     public void properFlightIdAndDateResponseTest() throws Exception {
-        FlightSummaryResponse flightSummaryResponse = requestProcessor.flightNumberResponse(1,"2016-12-06T07:08:13-01:00");
+        FlightSummaryResponse flightSummaryResponse = requestProcessor
+                .flightNumberResponse(1, parseDateFromString("2016-12-06T07:08:13-01:00").get());
         FlightSummaryResponse expected = new FlightSummaryResponse(2241,1381,false,"");
         assertEquals(expected, flightSummaryResponse);
     }

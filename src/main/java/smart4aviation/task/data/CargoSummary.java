@@ -1,4 +1,4 @@
-package smart4aviation.task.datamodel;
+package smart4aviation.task.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import smart4aviation.task.util.WeightUnit;
