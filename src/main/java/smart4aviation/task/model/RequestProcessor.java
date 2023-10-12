@@ -49,8 +49,8 @@ public class RequestProcessor {
 
     private Optional<Flight> findFlightBasedOnDateAndId(List<Flight> flightData, int flightNumber, Date date) {
         return flightData.stream()
-                .filter(flight ->
-                        flight.getDepartureDate().equals(date))
+                .filter(flight -> flight.getDepartureDate().equals(date)
+                && flight.getFlightId() == flightNumber)
                 .findFirst();
     }
 

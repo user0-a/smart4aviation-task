@@ -17,8 +17,8 @@ public class FlightSummaryTest {
     @Test
     public void properFlightIdAndDateResponseTest() throws Exception {
         FlightSummaryResponse flightSummaryResponse = requestProcessor
-                .flightNumberResponse(1, parseDateFromString("2016-12-06T07:08:13-01:00").get());
-        FlightSummaryResponse expected = new FlightSummaryResponse(2241,1381,false,"");
+                .flightNumberResponse(0, parseDateFromString("2016-12-06T07:08:13-01:00").get());
+        FlightSummaryResponse expected = new FlightSummaryResponse(1386,961,false,"");
         assertEquals(expected, flightSummaryResponse);
     }
 
