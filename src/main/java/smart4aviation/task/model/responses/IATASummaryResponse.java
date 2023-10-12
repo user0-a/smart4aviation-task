@@ -44,4 +44,14 @@ public class IATASummaryResponse extends Response {
     public int hashCode() {
         return Objects.hash(allPiecesArriving, numberOfFlightArriving, allPiecesDeparting, numberOfFlightDeparting);
     }
+
+    @Override
+    public String toString() {
+        return "IATASummaryResponse{" +
+                "allPiecesArriving=" + allPiecesArriving +
+                ", numberOfFlightArriving=" + numberOfFlightArriving +
+                ", allPiecesDeparting=" + allPiecesDeparting +
+                ", numberOfFlightDeparting=" + numberOfFlightDeparting +
+                '}';
+    }
 }
