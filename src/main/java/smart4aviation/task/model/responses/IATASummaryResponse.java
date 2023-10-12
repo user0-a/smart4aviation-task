@@ -5,15 +5,15 @@ import java.util.Objects;
 public class IATASummaryResponse extends Response {
     private final int allPiecesArriving;
     private final int numberOfFlightArriving;
-    private final int allPiecesDeparturing;
-    private final int numberOfFlightDeparturing;
+    private final int allPiecesDeparting;
+    private final int numberOfFlightDeparting;
 
-    public IATASummaryResponse(int allPiecesArriving, int numberOfFlightArriving, int allPiecesDeparturing, int numberOfFlightDeparturing, boolean isFailed, String failedReason) {
+    public IATASummaryResponse(int allPiecesArriving, int numberOfFlightArriving, int allPiecesDeparting, int numberOfFlightDeparting, boolean isFailed, String failedReason) {
         super(isFailed,failedReason);
         this.allPiecesArriving = allPiecesArriving;
         this.numberOfFlightArriving = numberOfFlightArriving;
-        this.allPiecesDeparturing = allPiecesDeparturing;
-        this.numberOfFlightDeparturing = numberOfFlightDeparturing;
+        this.allPiecesDeparting = allPiecesDeparting;
+        this.numberOfFlightDeparting = numberOfFlightDeparting;
     }
 
     public int getAllPiecesArriving() {
@@ -24,12 +24,12 @@ public class IATASummaryResponse extends Response {
         return numberOfFlightArriving;
     }
 
-    public int getAllPiecesDeparturing() {
-        return allPiecesDeparturing;
+    public int getAllPiecesDeparting() {
+        return allPiecesDeparting;
     }
 
-    public int getNumberOfFlightDeparturing() {
-        return numberOfFlightDeparturing;
+    public int getNumberOfFlightDeparting() {
+        return numberOfFlightDeparting;
     }
 
     @Override
@@ -37,11 +37,11 @@ public class IATASummaryResponse extends Response {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         IATASummaryResponse that = (IATASummaryResponse) o;
-        return allPiecesArriving == that.allPiecesArriving && numberOfFlightArriving == that.numberOfFlightArriving && allPiecesDeparturing == that.allPiecesDeparturing && numberOfFlightDeparturing == that.numberOfFlightDeparturing;
+        return allPiecesArriving == that.allPiecesArriving && numberOfFlightArriving == that.numberOfFlightArriving && allPiecesDeparting == that.allPiecesDeparting && numberOfFlightDeparting == that.numberOfFlightDeparting;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(allPiecesArriving, numberOfFlightArriving, allPiecesDeparturing, numberOfFlightDeparturing);
+        return Objects.hash(allPiecesArriving, numberOfFlightArriving, allPiecesDeparting, numberOfFlightDeparting);
     }
 }

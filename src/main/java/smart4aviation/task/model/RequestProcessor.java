@@ -10,6 +10,8 @@ import smart4aviation.task.model.responses.IATASummaryResponse;
 import smart4aviation.task.model.responses.IATASummaryResponseFactory;
 import smart4aviation.task.util.WeightUnit;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -66,16 +68,20 @@ public class RequestProcessor {
         List<Flight> flightList = connector.getFlights();
         List<CargoSummary> populatedCargo = connector.getCargo();
 
-        List<Flight> getFlightsArriving = getFlightsBasedOnConditions(flightList,true,IATACode);
-        List<Flight> getFlightsDeparture = getFlightsBasedOnConditions(flightList,false,IATACode);
+        List<Flight> getFlightsArriving = getFlightsBasedOnConditions(flightList, true, IATACode, date);
+        List<Flight> getFlightsDeparture = getFlightsBasedOnConditions(flightList, false, IATACode, date);
+
+        if(getFlightsArriving.isEmpty() && getFlightsDeparture.isEmpty()){
+            return iataSummaryResponseFactory.createFailedIATASummaryResponse("Not flights found for this date");
+        }
 
         int allPiecesArriving = calculateAllPiecesForFlights(getFlightsArriving, populatedCargo);
-        int allPiecesDeparturing = calculateAllPiecesForFlights(getFlightsDeparture, populatedCargo);
+        int allPiecesDeparting = calculateAllPiecesForFlights(getFlightsDeparture, populatedCargo);
 
         return iataSummaryResponseFactory.createIATASummaryResponse(
                 allPiecesArriving,
                 getFlightsArriving.size(),
-                allPiecesDeparturing,
+                allPiecesDeparting,
                 getFlightsDeparture.size()
         );
     }
@@ -91,7 +97,7 @@ public class RequestProcessor {
                 ).reduce(0, Integer::sum);
     }
 
-    private List<Flight> getFlightsBasedOnConditions(List<Flight> flightList, boolean findArrival, String IATACode){
+    private List<Flight> getFlightsBasedOnConditions(List<Flight> flightList, boolean findArrival, String IATACode, Date date){
         return flightList
                 .stream()
                 .filter(flight ->
@@ -102,7 +108,15 @@ public class RequestProcessor {
                                 return flight.getDepartureAirportIATACode().equals(IATACode);
                             }
                         }
-                ).toList();
+                )
+                .filter(flight -> {
+                    Instant dateInstant = date.toInstant()
+                            .truncatedTo(ChronoUnit.DAYS);
+                    Instant flightInstant = flight.getDepartureDate().toInstant()
+                            .truncatedTo(ChronoUnit.DAYS);
+                    return dateInstant.equals(flightInstant);
+                })
+                .toList();
     }
 
 }
