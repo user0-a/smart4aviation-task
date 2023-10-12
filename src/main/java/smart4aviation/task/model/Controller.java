@@ -6,16 +6,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class OverallController {
+public class Controller {
 
     @Autowired
     private RequestProcessor requestProcessor;
-    @GetMapping(value = "/get-info-based-on-iata")
+    @GetMapping(value = "/iata-summary")
     public String getUsers(@RequestParam String IATACode, @RequestParam String date) throws Exception {
        return requestProcessor.iataCodeResponse(IATACode,date).toString();
     }
 
-    @GetMapping(value = "/flight-number-info")
+    @GetMapping(value = "/flight-number-summary")
     public String getUsers(@RequestParam int flightNumber, @RequestParam String date) throws Exception {
         return requestProcessor.flightNumberResponse(flightNumber,date).toString();
     }

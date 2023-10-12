@@ -1,12 +1,11 @@
 package smart4aviation.task.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestParam;
 import smart4aviation.task.databaseconnection.Connector;
-import smart4aviation.task.datamodel.CargoSummaryForFlight;
-import smart4aviation.task.datamodel.FlightJSON;
-import smart4aviation.task.model.responses.FlightNumberResponse;
-import smart4aviation.task.model.responses.IATACodeResponse;
+import smart4aviation.task.datamodel.CargoSummary;
+import smart4aviation.task.datamodel.Flight;
+import smart4aviation.task.model.responses.FlightSummaryResponse;
+import smart4aviation.task.model.responses.IATASummaryResponse;
 import smart4aviation.task.util.IATACodeValidator;
 import smart4aviation.task.util.WeightUnit;
 
@@ -18,50 +17,50 @@ import static smart4aviation.task.util.DateParser.parseDateFromString;
 
 public class RequestProcessor {
     @Autowired
-    Connector connector;
+    private Connector connector;
 
-    public FlightNumberResponse flightNumberResponse(int flightNumber, String date) throws Exception { // TODO exception handling better
-        List<FlightJSON> flightJSONList = connector.getPopulatedFlights();
-        List<CargoSummaryForFlight> populatedCargo = connector.getPopulatedCargo();
+    public FlightSummaryResponse flightNumberResponse(int flightNumber, String date) throws Exception { // TODO exception handling better
+        List<Flight> flightList = connector.getPopulatedFlights();
+        List<CargoSummary> populatedCargo = connector.getPopulatedCargo();
 
         Optional<Date> prasedDate = parseDateFromString(date);
 
         if(prasedDate.isEmpty()){
-            return new FlightNumberResponse(0,0,true,"data failed");
+            return new FlightSummaryResponse(0,0,true,"data failed");
         }
 
-        Optional<CargoSummaryForFlight> cargoModel = populatedCargo.stream().filter(e -> e.getFlightId() == flightNumber).findFirst();
-        Optional<FlightJSON> flight  = flightJSONList.stream().filter(e -> e.getDepartureDate().equals(prasedDate.get())).findFirst();
+        Optional<CargoSummary> cargoModel = populatedCargo.stream().filter(e -> e.getFlightId() == flightNumber).findFirst();
+        Optional<Flight> flight  = flightList.stream().filter(e -> e.getDepartureDate().equals(prasedDate.get())).findFirst();
 
         if(cargoModel.isPresent() && flight.isPresent()){
             int cargoWeight = cargoModel.get().getAllCargoWeight(WeightUnit.kg);
 
             int baggageWeight = cargoModel.get().getAllBaggageWeight(WeightUnit.kg);
 
-            return new FlightNumberResponse(cargoWeight,baggageWeight,false, "");
+            return new FlightSummaryResponse(cargoWeight,baggageWeight,false, "");
         }
 
-        return new FlightNumberResponse(0,0,true,"flight not found");
+        return new FlightSummaryResponse(0,0,true,"flight not found");
     }
 
-    public IATACodeResponse iataCodeResponse(String IATACode, String date) throws Exception { // TODO date
-        List<FlightJSON> flightJSONList = connector.getPopulatedFlights();
-        List<CargoSummaryForFlight> populatedCargo = connector.getPopulatedCargo();
+    public IATASummaryResponse iataCodeResponse(String IATACode, String date) throws Exception { // TODO date
+        List<Flight> flightList = connector.getPopulatedFlights();
+        List<CargoSummary> populatedCargo = connector.getPopulatedCargo();
 
 
         Optional<Date> prasedDate = parseDateFromString(date);
 
         if(!IATACodeValidator.isValidIATAArrivalsCode(IATACode)){
-            return new IATACodeResponse(0,0,0,0,true,"NOT COOL IATA");
+            return new IATASummaryResponse(0,0,0,0,true,"NOT COOL IATA");
         }
 
-        List<FlightJSON> getFlightsArriving = flightJSONList
+        List<Flight> getFlightsArriving = flightList
                 .stream()
                 .filter(flight ->
                         flight.getArrivalAirportIATACode().equals(IATACode)
                 ).toList();
 
-        int allPiecesArriving = getFlightsArriving.stream().map(FlightJSON::getFlightId)
+        int allPiecesArriving = getFlightsArriving.stream().map(Flight::getFlightId)
                 .map(e ->
                         populatedCargo.stream()
                                 .filter(x -> x.getFlightId() == e)
@@ -71,13 +70,13 @@ public class RequestProcessor {
                 ).reduce(0, Integer::sum);
 
 
-        List<FlightJSON> getFlightsDeparture = flightJSONList
+        List<Flight> getFlightsDeparture = flightList
                 .stream()
                 .filter(flight ->
                         flight.getDepartureAirportIATACode().equals(IATACode)
                 ).toList();
 
-        int allPiecesDeparturing = getFlightsDeparture.stream().map(FlightJSON::getFlightId)
+        int allPiecesDeparturing = getFlightsDeparture.stream().map(Flight::getFlightId)
                 .map(e ->
                         populatedCargo.stream()
                                 .filter(x -> x.getFlightId() == e)
@@ -88,7 +87,7 @@ public class RequestProcessor {
 
 
 
-        return new IATACodeResponse(
+        return new IATASummaryResponse(
                 allPiecesArriving,
                 getFlightsArriving.size(),
                 allPiecesDeparturing,

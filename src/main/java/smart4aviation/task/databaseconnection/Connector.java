@@ -1,12 +1,11 @@
 package smart4aviation.task.databaseconnection;
 
-import smart4aviation.task.datamodel.CargoSummaryForFlight;
-import smart4aviation.task.datamodel.FlightJSON;
+import smart4aviation.task.datamodel.CargoSummary;
+import smart4aviation.task.datamodel.Flight;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface Connector {
-    List<FlightJSON> getPopulatedFlights() throws Exception;
-    List<CargoSummaryForFlight> getPopulatedCargo() throws Exception;
+    List<Flight> getPopulatedFlights() throws Exception;
+    List<CargoSummary> getPopulatedCargo() throws Exception;
 }

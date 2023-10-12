@@ -1,8 +1,8 @@
 package smart4aviation.task.databaseconnection;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import smart4aviation.task.datamodel.CargoSummaryForFlight;
-import smart4aviation.task.datamodel.FlightJSON;
+import smart4aviation.task.datamodel.CargoSummary;
+import smart4aviation.task.datamodel.Flight;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,14 +28,14 @@ public class MockedConnector implements Connector {
     }
 
     @Override
-    public List<FlightJSON> getPopulatedFlights() throws IOException { // TODO exception handling better
-        FlightJSON[] flights = objectMapper.readValue(Files.readAllBytes(flightJsonPath), FlightJSON[].class);
+    public List<Flight> getPopulatedFlights() throws IOException { // TODO exception handling better
+        Flight[] flights = objectMapper.readValue(Files.readAllBytes(flightJsonPath), Flight[].class);
         return Arrays.stream(flights).toList();
     }
 
     @Override
-    public List<CargoSummaryForFlight> getPopulatedCargo() throws IOException {
-        CargoSummaryForFlight[] cargoSummaryForFlight = objectMapper.readValue(Files.readAllBytes(cargoJsonPath), CargoSummaryForFlight[].class);
-        return Arrays.stream(cargoSummaryForFlight).toList();
+    public List<CargoSummary> getPopulatedCargo() throws IOException {
+        CargoSummary[] cargoSummary = objectMapper.readValue(Files.readAllBytes(cargoJsonPath), CargoSummary[].class);
+        return Arrays.stream(cargoSummary).toList();
     }
 }

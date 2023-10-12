@@ -2,7 +2,7 @@ package smart4aviation.task.datamodel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CargoRepresentation {
+public class Cargo {
 
     @JsonProperty("id")
     private long id;

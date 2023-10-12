@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
-public class FlightJSON {
+public class Flight {
     @JsonProperty("flightId")
     private long flightId;
     @JsonProperty("flightNumber")

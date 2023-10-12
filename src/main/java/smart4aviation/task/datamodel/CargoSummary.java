@@ -8,14 +8,14 @@ import java.util.List;
 import static smart4aviation.task.util.WeightUnitExchanger.kgToLb;
 import static smart4aviation.task.util.WeightUnitExchanger.lbToKg;
 
-public class CargoSummaryForFlight {
+public class CargoSummary {
 
     @JsonProperty("flightId")
     private long flightId;
     @JsonProperty("baggage")
-    private List<CargoRepresentation> baggage;
+    private List<Cargo> baggage;
     @JsonProperty("cargo")
-    private List<CargoRepresentation> cargo;
+    private List<Cargo> cargo;
 
     public long getFlightId() {
         return flightId;
@@ -25,19 +25,19 @@ public class CargoSummaryForFlight {
         this.flightId = flightId;
     }
 
-    public List<CargoRepresentation> getBaggage() {
+    public List<Cargo> getBaggage() {
         return baggage;
     }
 
-    public void setBaggage(List<CargoRepresentation> baggage) {
+    public void setBaggage(List<Cargo> baggage) {
         this.baggage = baggage;
     }
 
-    public List<CargoRepresentation> getCargo() {
+    public List<Cargo> getCargo() {
         return cargo;
     }
 
-    public void setCargo(List<CargoRepresentation> cargo) {
+    public void setCargo(List<Cargo> cargo) {
         this.cargo = cargo;
     }
 
@@ -55,16 +55,16 @@ public class CargoSummaryForFlight {
 
     public int getAllPieces() {
         return this.getBaggage().stream()
-                .map(CargoRepresentation::getPieces)
+                .map(Cargo::getPieces)
                 .reduce(0, Integer::sum)
                 +
                 this.getCargo().stream()
-                        .map(CargoRepresentation::getPieces)
+                        .map(Cargo::getPieces)
                         .reduce(0, Integer::sum);
 
     }
 
-    private int cargoAlignWeightUnit(CargoRepresentation cargo, WeightUnit weightUnit) {
+    private int cargoAlignWeightUnit(Cargo cargo, WeightUnit weightUnit) {
         if (cargo.getWeightUnit().equals(weightUnit.name())) {
             return cargo.getWeight();
         }

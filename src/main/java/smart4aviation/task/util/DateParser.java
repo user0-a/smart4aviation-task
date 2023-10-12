@@ -7,10 +7,14 @@ import java.util.Optional;
 public class DateParser {
 
     static public Optional<Date> parseDateFromString(String dateString) {
-        return Optional.of(
-                Date.from(
-                        Instant.parse(dateString)
-                ));
+        try {
+            return Optional.of(
+                    Date.from(
+                            Instant.parse(dateString)
+                    ));
+        }catch (Exception x){
+            return Optional.empty();
+        }
     }
 
 }
