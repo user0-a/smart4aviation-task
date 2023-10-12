@@ -1,0 +1,37 @@
+[
+  {
+    "flightId": 0,
+    "flightNumber": 8091,
+    "departureAirportIATACode": "YYZ",
+    "arrivalAirportIATACode": "LEW",
+    "departureDate": "2016-12-06T07:08:13-01:00"
+  },
+  {
+    "flightId": 1,
+    "flightNumber": 1279,
+    "departureAirportIATACode": "LAX",
+    "arrivalAirportIATACode": "PPX",
+    "departureDate": "2023-02-28T10:00:57-01:00"
+  },
+  {
+    "flightId": 2,
+    "flightNumber": 6926,
+    "departureAirportIATACode": "SEA",
+    "arrivalAirportIATACode": "LEW",
+    "departureDate": "2023-02-11T09:54:09-01:00"
+  },
+  {
+    "flightId": 3,
+    "flightNumber": 3977,
+    "departureAirportIATACode": "LAX",
+    "arrivalAirportIATACode": "KRK",
+    "departureDate": "2019-06-04T03:59:37-02:00"
+  },
+  {
+    "flightId": 4,
+    "flightNumber": 9633,
+    "departureAirportIATACode": "YYT",
+    "arrivalAirportIATACode": "GDN",
+    "departureDate": "2023-02-03T02:02:10-01:00"
+  }
+]
